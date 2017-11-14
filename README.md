@@ -1,4 +1,9 @@
-﻿# Importante
+# Pendências (Márcio)
+
+Escrever o caso de uso de dois relatórios para o grupo 3 e um relatório para o grupo 4.
+
+
+# Importante
 
 Antes de rodar a aplicação, copie o arquivo "configuration-default.properties" do diretório /src/main/java para o arquivo "configuration.properties" no mesmo diretório.
 
