@@ -1,6 +1,8 @@
-# Pendências (Márcio)
+# Novidades
 
-Escrever o caso de uso de dois relatórios para o grupo 3 e um relatório para o grupo 4.
+Grupo 3: implementar os casos de uso #3 e #19.
+
+Grupo 4: implementar o caso de uso #18.
 
 
 # Importante
