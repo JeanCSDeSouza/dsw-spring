@@ -65,7 +65,22 @@ public class Edital
 	{
 		return comissaoSelecao;
 	}
-
+	/**
+	 * Retorna um List contendo todos os professores 
+	 * da comissão de seleção
+	 */
+	public List<Usuario> getListComissaoSelecao(){
+		return comissaoSelecao;
+	}
+	/**
+	 * Substitui a lista de comissao de seleção pela passada
+	 * se size for maior que zero
+	 * @param comissaoSelecao
+	 */
+	public void setListComissaoSelecao(List<Usuario> comissaoSelecao) {
+		if(comissaoSelecao.size() > 0)
+			this.comissaoSelecao = comissaoSelecao;
+	}
 	/**
 	 * Adiciona um membro na comissão de seleção
 	 */
@@ -73,7 +88,19 @@ public class Edital
 	{
 		this.comissaoSelecao.add(professor);
 	}
-
+	/**
+	 * Remove um professor da comissão de seleçãoo
+	 * @param professor
+	 * @return true se o professor estiver na comissão
+	 */
+	public boolean removeComissaoSelecao(Usuario professor) {
+		if( this.comissaoSelecao.contains(professor)) {
+			this.comissaoSelecao.remove(professor);
+			return true;
+		}else {
+			return false;
+		}
+	}
 	/**
 	 * Retorna a composição da comissão de recursos
 	 */
@@ -81,7 +108,17 @@ public class Edital
 	{
 		return comissaoRecurso;
 	}
-
+	/**
+	 * Retorna um List contendo todos os professores 
+	 * da comissão de recursos 
+	 */
+	public List<Usuario> getListComissaoRecursos(){
+		return comissaoRecurso;
+	}
+	public void setListComissaoRecursos(List<Usuario> comissaoRecurso) {
+		if(comissaoRecurso.size() > 0)
+			this.comissaoRecurso = comissaoRecurso;
+	}
 	/**
 	 * Adiciona um membro na comissão de recursos
 	 */
@@ -89,7 +126,13 @@ public class Edital
 	{
 		this.comissaoRecurso.add(professor);
 	}
-
+	public boolean removeComissaoRecurso(Usuario professor) {
+		if(this.comissaoRecurso.contains(professor)) {
+			this.comissaoRecurso.remove(professor);
+			return true;
+		}else 
+			return false;
+	}
 	/**
 	 * Retorna a lista de provas escritas
 	 */
@@ -97,7 +140,13 @@ public class Edital
 	{
 		return provasEscritas;
 	}
-
+	/**
+	 * Retorna a lista de provas escritas
+	 */
+	public List<ProvaEscrita> getListProvasEscritas()
+	{
+		return provasEscritas;
+	}
 	/**
 	 * Adiciona uma prova escrita no edital
 	 */
@@ -146,7 +195,13 @@ public class Edital
 	{
 		return projetosPesquisa;
 	}
-
+	/**
+	 * Retorna um list com projetos de pesquisa
+	 */
+	public List<ProjetoPesquisa> getListProjetosPesquisa()
+	{
+		return projetosPesquisa;
+	}
 	/**
 	 * Retorna um projeto de pesquisa, dado seu índice
 	 */
@@ -177,6 +232,7 @@ public class Edital
 
 	/**
 	 * Adiciona um projeto de pesquisa no edital
+	 * 
 	 */
 	public ProjetoPesquisa adicionaProjetoPesquisa(String codigo, String nome, boolean exigeProvaOral)
 	{

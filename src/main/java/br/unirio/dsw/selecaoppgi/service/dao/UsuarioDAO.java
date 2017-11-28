@@ -72,7 +72,34 @@ public class UsuarioDAO extends AbstractDAO
 			return null;
 		}
 	}
+	/**
+	 * Lista usuarios com role 2, vulgo professores.
+	 * @return
+	 */
+	public List<Usuario> listaProfessores(){
+		Connection c = getConnection();
+		
+		if (c == null)
+			return null;
+		
+		List<Usuario> professores = new ArrayList<Usuario>();
+		try
+		{
+			PreparedStatement ps = c.prepareStatement("SELECT * FROM Usuario WHERE papel = 2");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Usuario professor = carrega(rs);
+				professores.add(professor);
+			}
+			c.close();
+			return professores;
 
+		} catch (SQLException e)
+		{
+			log("UserDAO.listaProfessores: " + e.getMessage());
+			return null;
+		}	
+	}
 	/**
 	 * Carrega um usuário, dado seu e-mail
 	 */

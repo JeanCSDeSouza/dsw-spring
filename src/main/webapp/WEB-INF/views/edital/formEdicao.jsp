@@ -1,7 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%@include file="/WEB-INF/views/helper/template.jsp" %>
-
 <script>
 var id = "${id}";
 </script>
@@ -78,8 +77,8 @@ var id = "${id}";
 					</h4>
 				</div>
 				<div class="right">
-					<a href="${pageContext.request.contextPath}/edital/${id}/selecao/create">
-						<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+					<a href="${pageContext.request.contextPath}/edital/${id}/selecao/edita">
+						<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="addSelecao">
 							<spring:message code="edital.form.botao.novo.integrante"/>
 						</button>
 					</a>
@@ -100,10 +99,9 @@ var id = "${id}";
 			<tr>
 				<td class="mdl-data-table__cell--non-numeric">${professor.nome}</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/edital/${id}/selecao/remove/${professor.id}">
-						<button class="mdl-button mdl-js-button mdl-button--icon">
+						<button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteItem('${pageContext.request.contextPath}/edital/${id}/selecao/remove/${professor.id}', sucess)">
 							<i class="material-icons">delete</i>
-						</button></a>
+						</button>
 				</td>
 			</tr>
 			</c:forEach>
@@ -136,7 +134,7 @@ var id = "${id}";
 					</h4>
 				</div>
 				<div class="right">
-					<a href="${pageContext.request.contextPath}/edital/${id}/recursos/create">
+					<a href="${pageContext.request.contextPath}/edital/${id}/recursos/edita">
 						<button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
 							<spring:message code="edital.form.botao.novo.integrante"/>
 						</button>
@@ -158,10 +156,9 @@ var id = "${id}";
 			<tr>
 				<td class="mdl-data-table__cell--non-numeric">${professor.nome}</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/edital/${id}/recursos/remove/${professor.id}">
-						<button class="mdl-button mdl-js-button mdl-button--icon">
+						<button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteItem('${pageContext.request.contextPath}/edital/${id}/recursos/remove/${professor.id}', sucess)">
 							<i class="material-icons">delete</i>
-						</button></a>
+						</button>
 				</td>
 			</tr>
 			</c:forEach>
@@ -294,10 +291,9 @@ var id = "${id}";
 						<button class="mdl-button mdl-js-button mdl-button--icon">
 							<i class="material-icons">edit</i>
 						</button></a>
-					<a href="${pageContext.request.contextPath}/edital/${id}/projeto/remove/${projeto.codigo}">
-						<button class="mdl-button mdl-js-button mdl-button--icon">
+						<button class="mdl-button mdl-js-button mdl-button--icon" onclick="deleteItem('${pageContext.request.contextPath}/edital/${id}/projeto/remove/${projeto.codigo}', sucess)">
 							<i class="material-icons">delete</i>
-						</button></a>
+						</button>
 				</td>
 			</tr>
 			</c:forEach>
@@ -385,5 +381,39 @@ var id = "${id}";
         <div class="mdl-cell mdl-cell--1-col">
         </div>
 	</div>
-
+  <div id="myDialog">
+    <h4 class="mdl-dialog__title">Allow data collection?</h4>
+    <div class="mdl-dialog__content">
+      <p>
+        Allowing us to collect data will let us get you the information you want faster.
+      </p>
+    </div>
+    <div class="mdl-dialog__actions">
+      <button type="button" class="mdl-button">Agree</button>
+      <button type="button" class="mdl-button close">Disagree</button>
+    </div>
+  </div>
+	
 </div>
+<script>
+function deleteItem(url, cFunction) {
+	var xhttp;
+	var resposta = confirm("Confirma a exclusão?");
+	if (resposta == true) {
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+					cFunction(this);
+			}
+		};
+		xhttp.open("GET", url, true);
+		xhttp.send();
+	}
+}
+function sucess(xhttp) {
+	window.location.reload()
+}
+function error(xhttp) {
+	alert("Não foi possível excluir o edital");
+}
+</script>

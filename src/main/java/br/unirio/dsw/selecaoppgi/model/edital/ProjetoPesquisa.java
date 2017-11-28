@@ -47,7 +47,20 @@ public class ProjetoPesquisa
 	{
 		this.professores.add(professor);
 	}
-
+	/**
+	 * substitui a lista de professores pela lista passada
+	 * @param professores
+	 */
+	public void setProfessores(List<Usuario> professores) {
+		this.professores = professores;
+	}
+	/**
+	 * Retorna um list contendo os professores
+	 * @return
+	 */
+	public List<Usuario> retornaListaDeProfessores(){
+		return this.professores;
+	}
 	/**
 	 * Retorna a lista de provas escritas do projeto de pesquisa
 	 */
@@ -63,4 +76,10 @@ public class ProjetoPesquisa
 	{
 		this.provasEscritas.add(prova);
 	}
-}
+	/*
+	 * Substitui a lista de provas pela passada
+	 */
+	public void setProvas(List<ProvaEscrita> provas) {
+		this.provasEscritas = provas;
+	}	
+ }
