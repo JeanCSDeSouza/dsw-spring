@@ -500,16 +500,6 @@ public class EditalController
 			model.setViewName("redirect:/edital/list?message=edital.form.edital.nao.encontrado");
 			return model;
 		}
-		if( form.getProvasCodigos().size() == 0) {
-			model.getModel().put("form", form);	
-			model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/create?message=edital.form.projeto.form.erro.prova.nao.existe.prova.no.projeto");
-			return model;
-		}
-		if( form.getProfessoresIds().size() == 0 ) {
-			model.getModel().put("form", form);	
-			model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/create?message=edital.form.projeto.form.erro.prova.nao.existe.professor.no.projeto");
-			return model;
-		}
 		ProjetoPesquisa projeto = new ProjetoPesquisa();
 		projeto.setCodigo(form.getCodigo());
 		projeto.setNome(form.getNome());
@@ -545,14 +535,23 @@ public class EditalController
 				}		
 			}			
 		}
-		if( provas.size() == 0) {
+		if( form.getProvasCodigos().size() == 0) {
 			model.getModel().put("form", form);	
-			model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/create?message=edital.form.projeto.form.erro.prova.nao.exite.prova.no.projeto");
+			if (form.getCodigoOriginal().length() == 4) {
+				model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/edit/" + form.getCodigoOriginal()
+						+ "?message=edital.form.projeto.form.erro.prova.nao.existe.prova.no.projeto");
+			}else
+				model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/create?message=edital.form.projeto.form.erro.prova.nao.existe.prova.no.projeto");
 			return model;
 		}
-		if( professores.size() == 0 ) {
+		if( form.getProfessoresIds().size() == 0 ) {
 			model.getModel().put("form", form);	
-			model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/create?message=edital.form.projeto.form.erro.prova.nao.exite.professor.no.projeto");
+			if (form.getCodigoOriginal().length() == 4) {
+				model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/edit/" + form.getCodigoOriginal()
+						+ "?message=edital.form.projeto.form.erro.prova.nao.existe.professor.no.projeto");
+			}else
+				model.setViewName("redirect:/edital/" + form.getIdEdital() + "/projeto/create?message=edital.form.projeto.form.erro.prova.nao.existe.professor.no.projeto");
+
 			return model;
 		}
 		projeto.setProfessores(professores);
@@ -664,7 +663,6 @@ public class EditalController
 			return root.toString();
 		}
 		if(comissao.equalsIgnoreCase(EditalComissoesConstants.COMISSAO_DE_SELECAO.getMessage())) {
-			System.out.println(professorRemovido);
 			if (edital.removeComissaoSelecao(professorRemovido)) {
 				editalDAO.atualiza(edital);
 				root.addProperty(EditalComissoesConstants.RETURN_PREFIX.getMessage(),
@@ -746,7 +744,8 @@ public class EditalController
 			model.setViewName("redirect:/edital/list?message=edital.form.edital.nao.encontrado");
 	        return model;
 		}
-		if(form.getProfessoresIds().size() == 0){
+		if(form.getProfessoresIds() == null || form.getProfessoresIds().isEmpty() || form.getProfessoresIds().size() == 0){
+			model.getModel().put("form", form);	
 			model.setViewName("redirect:/edital/edit/"+ form.getId() +"?message=edital.form.comissao.erro.nao.existe.professor.na.comissao");
 	        return model;
 		}
@@ -756,6 +755,7 @@ public class EditalController
 				try {
 					idAdicionado = Integer.parseInt(parameter);
 				}catch(NumberFormatException nfe) {
+					model.getModel().put("form", form);	
 					model.setViewName("redirect:/edital/edit/" + form.getId() +"?message=edital.form.comissao.erro.professor.id.nao.inteiro");
 					return model;
 				}
@@ -764,10 +764,10 @@ public class EditalController
 				}
 		}
 		if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_SELECAO.getMessage())) 
-			professores.forEach( action -> edital.adicionaComissaoSelecao(action));
+			edital.setListComissaoSelecao(professores);
 		else 
 			if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_RECURSO.getMessage()))
-				professores.forEach( action -> edital.adicionaComissaoRecurso(action));
+				edital.setListComissaoRecursos(professores);;
 			
 		editalDAO.atualiza(edital);
 		model.setViewName("redirect:/edital/edit/" + form.getId() + "?message=edital.form.comissao.atualizada");

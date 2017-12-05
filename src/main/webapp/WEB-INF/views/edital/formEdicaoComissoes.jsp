@@ -135,13 +135,6 @@ var id = "${id}";
 			</tr>
 			</c:forEach>
 			</c:if>
-			<c:if test="${empty edital.comissaoSelecao}">
-			<tr>
-				<td class="mdl-data-table__cell--non-numeric" colspan="7">
-					<spring:message code="edital.form.nenhum.professor.disponivel"/>
-				</td>
-			</tr>
-			</c:if>
 			</tbody>
 			</table>
 		</div>
