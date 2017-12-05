@@ -702,14 +702,23 @@ public class EditalController
 		}
 		
 		EditalForm form = new EditalForm();
-		form.setSelectProfessores( userDAO.listaProfessores());
+		List<Usuario> professores = userDAO.listaProfessores();
 		if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_SELECAO.getMessage()))
-			if(!edital.getListComissaoSelecao().isEmpty())
-				form.getSelectProfessores().removeAll(edital.getListComissaoSelecao());
-		else 
-			if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_RECURSO.getMessage()))
-				if(!edital.getListComissaoRecursos().isEmpty())
-					form.getSelectProfessores().removeAll(edital.getListComissaoRecursos());
+			if(edital.getComissaoSelecao().iterator().hasNext()) {
+				edital.getComissaoSelecao().forEach( professor -> {
+					if(professores.contains(professor))
+						professores.remove(professor);
+				});
+			}
+			else 
+				if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_RECURSO.getMessage()))
+					if(edital.getComissaoRecursos().iterator().hasNext()) {
+						edital.getComissaoRecursos().forEach( professor -> {
+							if(professores.contains(professor))
+								professores.remove(professor);
+						});
+					}
+		form.setSelectProfessores(professores);
 		form.setId(edital.getId());
 		form.setNome(edital.getNome());
 		form.setNotaMinimaAlinhamento(edital.getNotaMinimaAlinhamento());
@@ -754,11 +763,11 @@ public class EditalController
 					professores.add(userDAO.carregaUsuarioId(idAdicionado));
 				}
 		}
-		if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_SELECAO.getMessage()))
-			edital.setListComissaoSelecao(professores);
+		if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_SELECAO.getMessage())) 
+			professores.forEach( action -> edital.adicionaComissaoSelecao(action));
 		else 
 			if(comissao.equals(EditalComissoesConstants.COMISSAO_DE_RECURSO.getMessage()))
-				edital.setListComissaoRecursos(professores);
+				professores.forEach( action -> edital.adicionaComissaoRecurso(action));
 			
 		editalDAO.atualiza(edital);
 		model.setViewName("redirect:/edital/edit/" + form.getId() + "?message=edital.form.comissao.atualizada");

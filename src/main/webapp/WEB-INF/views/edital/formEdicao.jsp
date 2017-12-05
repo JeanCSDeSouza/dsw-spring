@@ -7,7 +7,7 @@ var id = "${id}";
 
 <div id="contents">
 
-    <!-- Campos b·sicos -->
+    <!-- Campos b√°sicos -->
 	<form:form action="${pageContext.request.contextPath}/edital/edit" commandName="form" method="POST" enctype="utf8" role="form">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<form:hidden path="id"/>
@@ -69,7 +69,7 @@ var id = "${id}";
 	</form:form>
 
 				
-	<!-- Comiss„o de seleÁ„o -->
+	<!-- Comissao de selecao -->
    	<div class="mdl-grid">
         <div class="mdl-cell mdl-cell--1-col">
         </div>
@@ -126,7 +126,7 @@ var id = "${id}";
 	</div>
 
 				
-	<!-- Comiss„o de recursos -->
+	<!-- Comissao de recursos -->
    	<div class="mdl-grid">
         <div class="mdl-cell mdl-cell--1-col">
         </div>
@@ -385,25 +385,12 @@ var id = "${id}";
 
         <div class="mdl-cell mdl-cell--1-col">
         </div>
-	</div>
-  <div id="myDialog">
-    <h4 class="mdl-dialog__title">Allow data collection?</h4>
-    <div class="mdl-dialog__content">
-      <p>
-        Allowing us to collect data will let us get you the information you want faster.
-      </p>
-    </div>
-    <div class="mdl-dialog__actions">
-      <button type="button" class="mdl-button">Agree</button>
-      <button type="button" class="mdl-button close">Disagree</button>
-    </div>
-  </div>
-	
+	</div>	
 </div>
 <script>
 function deleteItem(url, cFunction) {
 	var xhttp;
-	var resposta = confirm("Confirma a exclus„o?");
+	var resposta = confirm("Confirma a exclus√£oo?");
 	if (resposta == true) {
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
@@ -419,6 +406,6 @@ function sucess(xhttp) {
 	window.location.reload()
 }
 function error(xhttp) {
-	alert("N„o foi possÌvel excluir o edital");
+	alert("N√£o foi poss√≠vel excluir o edital");
 }
 </script>
