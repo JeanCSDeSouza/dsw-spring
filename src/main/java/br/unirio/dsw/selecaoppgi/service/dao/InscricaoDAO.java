@@ -1,12 +1,22 @@
 package br.unirio.dsw.selecaoppgi.service.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
+import br.unirio.dsw.selecaoppgi.model.edital.Edital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.AvaliacaoProvaEscrita;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoEdital;
 import br.unirio.dsw.selecaoppgi.model.inscricao.InscricaoProjetoPesquisa;
+import br.unirio.dsw.selecaoppgi.service.json.JsonInscricaoProjetoPesquisaReader;
 
 /**
  * Classe responsavel pela persistencia de inscrições em edital de seleção
@@ -357,6 +367,60 @@ public class InscricaoDAO extends AbstractDAO
 		// Somente se o projeto de pesquisa não exigir prova oral ou estiver presente na prova oral
 		// TODO Grupo 7: implementar este método em função do caso de uso #15
 		return false;
+	}
+	
+	/**
+	 * Carrega todas as inscrições em um edital
+	 */
+	public List<InscricaoEdital> carregaInscricoesEditalAcessoPublico(Edital edital)
+	{
+		String SQL = "SELECT usuario.id as id, usuario.nome AS nome, inscricao.* " + "FROM Inscricao "
+				+ "INNER JOIN usuario ON usuario.id = inscricao.idCandidato " + "AND homologado = 1 "
+				+ "AND idEdital = ?";
+
+		Connection c = getConnection();
+		List<InscricaoEdital> lista = new ArrayList<InscricaoEdital>();
+
+		try
+		{
+			PreparedStatement ps = c.prepareStatement(SQL);
+			ps.setInt(1, edital.getId());
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next())
+			{
+				InscricaoEdital item = new InscricaoEdital(edital);
+				item.setId(rs.getInt("inscricao.id"));
+				item.setIdCandidato(rs.getInt("id"));
+				item.setNomeCandidato(rs.getString("Nome"));
+				item.setCotaNegros(rs.getInt("inscricao.cotaNegros") != 0);
+				item.setCotaDeficientes(rs.getInt("inscricao.cotaDeficientes") != 0);
+				item.setHomologadoOriginal(rs.getInt("inscricao.homologadoInicial") != 0);
+				item.setJustificativaHomologacaoOriginal(rs.getString("inscricao.justificativaHomologacaoInicial"));
+				item.setHomologadoRecurso(rs.getInt("inscricao.homologadoRecurso") != 0);
+				item.setJustificativaHomologacaoRecurso(rs.getString("inscricao.justificativaHomologacaoRecurso"));
+				item.setHomologado(rs.getInt("homologado") != 0);
+				item.setDispensadoProvaOriginal(rs.getInt("dispensadoProvaInicial") != 0);
+				item.setJustificativaDispensaOriginal(rs.getString("justificativaDispensaInicial"));
+				item.setDispensadoProvaRecurso(rs.getInt("dispensadoProvaRecurso") != 0);
+				item.setJustificativaDispensaRecurso(rs.getString("justificativaDispensaRecurso"));
+
+				String jsonProjetosString = rs.getString("inscricao.jsonProjetos");
+				JsonArray jsonProjetos = (JsonArray) new JsonParser().parse(jsonProjetosString);
+
+				JsonInscricaoProjetoPesquisaReader reader = new JsonInscricaoProjetoPesquisaReader();
+				reader.execute(jsonProjetos, edital, item);
+
+				lista.add(item);
+			}
+
+		} catch (SQLException e)
+		{
+			log("InscricaoDAO.carregaInscricoesEdital: " + e.getMessage());
+		}
+
+		return lista;
 	}
 	
 	// TODO criar script para povoar as inscrições para os nossos editais

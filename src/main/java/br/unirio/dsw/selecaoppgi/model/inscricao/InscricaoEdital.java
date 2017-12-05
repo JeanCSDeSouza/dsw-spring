@@ -32,6 +32,7 @@ public class InscricaoEdital
 	private @Getter @Setter String justificativaDispensaRecurso;
 	private List<InscricaoProjetoPesquisa> projetosPesquisa;
 	private List<AvaliacaoProvaEscrita> provasEscritas;
+	private @Getter @Setter Boolean homologado;
 	
 	/**
 	 * Inicializa uma inscrição em um edital

@@ -43,6 +43,11 @@ var id = "${id}";
 			        <!-- Form buttons -->
 			        <div class="mdl-card__actions mdl-card--border">
 			       	 	<div class="left">
+			       	 		<a href="${pageContext.request.contextPath}/edital/${id}/relatorio/escritas/presenca">
+								<button type="button" class="mdl-button mdl-js-button mdl-button--colored mdl-button--raised mdl-js-ripple-effect">
+									<spring:message code="relatorio.temporario"/>
+								</button>
+							</a>
 			            </div>
 			            <div class="right">
 							<button type="submit" class="mdl-button mdl-js-button mdl-button--colored mdl-button--raised mdl-js-ripple-effect">
